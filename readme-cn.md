@@ -1,9 +1,10 @@
-# js-conditional-compile-loader
+# rollup-plugin-ifdef
 
-- [English](https://github.com/hzsrc/js-conditional-compile-loader/blob/master/readme.md)
+fork from [js-conditional-compile-loader](https://github.com/hzsrc/js-conditional-compile-loader)
+- [English](https://github.com/hzsrc/js-conditional-ifdef/blob/master/readme.md)
 - [插件介绍](https://segmentfault.com/a/1190000020102151)
 
-一个条件编译的webpack loader, 支持按条件构建各种代码文件，如js、ts、vue、css、scss、html等。   
+一个条件编译的rollup plugin，支持js,ts,css,scss,vue,react等等。   
 **条件编译**，是指 用同一套代码和同样的编译构建过程，根据设置的条件，选择性地编译指定的代码，从而输出不同程序的过程。  
 
 - 比如：用一套代码实现debug和release环境输出两套不同js程序，debug时直接输出各种数据信息编译开发调试，release时完全不包含这些代码。   
@@ -14,7 +15,7 @@
 插件提供了`IFDEBUG`和`IFTRUE`两个条件编译指令。用法是：在js代码的任意地方以`/*IFDEBUG`或`/*IFTRUE_xxx`开头，以`FIDEBUG*/`或`FITRUE_xxx*/`结尾，中间是被包裹的js代码。`xxx`是在webpack中指定的options条件属性名，比如`myFlag`。
 
 - 模式1 - 全注释:   
-因为采用了js注释的形式，故即使不使用js-conditional-compile-loader，也不影响js代码的运行逻辑。
+因为采用了js注释的形式，故即使不使用rollup-plugin-ifdef，也不影响js代码的运行逻辑。
 ````js
     /*IFDEBUG Any js here FIDEBUG*/
 ````
@@ -65,47 +66,28 @@ $state.go('win', {dir: menu.winId})
 
 ### 安装
 ````bash
-    npm i -D js-conditional-compile-loader
+    npm i -D rollup-plugin-ifdef
 ````
 
-### webpack配置
-这样修改webpack配置:     
-查看样例： [vue-element-ui-scaffold-webpack4](https://github.com/hzsrc/vue-element-ui-scaffold-webpack4)
-`js-conditional-compile-loader`需要作为处理源文件的第一步，即放在use数组的末尾。   
-如下例子为vue、js文件的配置，ts文件的配置类似。css、scss等样式的配置略复杂，可参考[这个样例](https://github.com/hzsrc/vue-element-ui-scaffold-webpack4/blob/master/build/utils.js)
+### vite配置
+这样修改vite配置:     
 
 ````js
-const conditionalCompiler = {
-    loader: 'js-conditional-compile-loader',
-    options: {
-        isDebug: process.env.NODE_ENV === 'development', // optional, this expression is default
-        envTest: process.env.ENV_CONFIG === 'test', // any prop name you want, used for /* IFTRUE_evnTest ...js code... FITRUE_evnTest */
-        myFlag: process.env.npm_config_myflag, // enabled when running command: `npm run build --myflag`
-    }
-}
+import { defineConfig } from "vite";
+import vue from "@vitejs/plugin-vue";
+import ifdef from "rollup-plugin-ifdef";
 
-module.exports = {
-    // others...
-    module: {
-        rules: [
-            {
-                test: /\.vue$/,
-                use: ['vue-loader', conditionalCompiler],
-            },
-            {
-                test: /\.js$/,
-                include: [resolve('src'), resolve('test')],
-                use: [
-                    //step-2
-                    'babel-loader?cacheDirectory',
-                    //step-1
-                    conditionalCompiler,
-                ],
-            },
-            // others...
-        ]
-    }
-}
+// https://vitejs.dev/config/
+export default defineConfig({
+  plugins: [
+    ifdef({
+        isDebug: process.env.NODE_ENV === 'development', // optional, this expression is default
+        envTest: process.env.ENV_CONFIG === 'test', // any prop name you want, used for /* 
+    }),
+    vue(),
+  ],
+});
+
 ````
 ### options 配置
 - isDebug: boolean

@@ -1,7 +1,7 @@
 {
-  "name": "js-conditional-compile-loader",
-  "version": "1.0.16",
-  "description": "A conditional compiling loader for webpack, support js,ts,css,scss,vue. 一个条件编译的webpack loader，支持js,ts,css,scss,vue等。",
+  "name": "rollup-plugin-ifdef",
+  "version": "1.0.0",
+  "description": "A conditional compiling plugin for rollup or vite, support js,ts,css,scss,vue,react. 一个条件编译的rollup plugin，支持js,ts,css,scss,vue,react等。",
   "main": "index.js",
   "scripts": {
     "test": "jest",
@@ -11,22 +11,22 @@
     "loader-utils": "2.*"
   },
   "keywords": [
-    "webpack",
+    "rollup",
+    "vite",
     "javascript",
     "ifdebug",
     "conditional",
     "compile"
   ],
   "author": {
-    "name": "James.Huang",
-    "email": "hz932@qq.com",
-    "url": "http://www.hz300.com/js-conditional-compile-loader/"
+    "name": "newlyborn",
+    "email": "708941147@qq.com",
+    "url": "https://github.com/sleepq123/rollup-plugin-ifdef"
   },
   "license": "MIT",
   "readme": "readme.md",
   "devDependencies": {
-    "jest": "^24.8.0",
-    "loader-utils": "^1.2.3"
+    "jest": "^24.8.0"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"

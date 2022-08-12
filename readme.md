@@ -1,19 +1,21 @@
-# js-conditional-compile-loader
+# rollup-plugin-ifdef
 
-- [中文文档](https://github.com/hzsrc/js-conditional-compile-loader/blob/master/readme-cn.md)
+fork from [js-conditional-compile-loader](https://github.com/hzsrc/js-conditional-compile-loader)
+
+- [中文文档](https://github.com/hzsrc/js-conditional-ifdef/blob/master/readme-cn.md)
 - [Introduction](https://segmentfault.com/a/1190000020102151)
 
-A conditional compiling loader for webpack, support any source files like js, ts, vue, css, scss, html.    
+A conditional compiling plugin for rollup or vite, support js,ts,css,scss,vue,react.   
 **Conditional compiling** means that we can use the same codes and compiling process, to build different applications with different  environment conditions.   
 - For example: we can output two different program for debug or release environment with a same source code project.    
 - Another sample: Use same codes and compiling process to supply different customers, just by using different building command args, like this: `npm run build --ali` for alibaba, `npm run build --tencent` for tencent。
-![image](https://hzsrc.github.io/js-conditional-compile-loader/intro.png)
+![image](https://github.com/sleepq123/rollup-plugin-ifdef/blob/master/intro.png?raw=true)
 
 ### Usage
 This loader provides two directives: `IFDEBUG` and `IFTRUE`. Just use them anywhere in js code like this: Start with `/*IFDEBUG` or `/*IFTRUE_xxx`, end with `FIDEBUG*/` or `FITRUE_xxx*/`, place js code in the center. The `xxx` is any condition property of the options in webpack, such like `myFlag`.
      
 - Mode 1 - comment all   
-Since it is designed by a js comment style, the code can run normaly even though the js-conditional-compile-loader is not used.    
+Since it is designed by a js comment style, the code can run normaly even though the rollup-plugin-ifdef is not used.    
 ````js
 /* IFDEBUG Any js here FIDEBUG */
 ````
@@ -62,47 +64,26 @@ $state.go('win', {dir: menu.winId})
 
 ### Setup
 ````bash
-    npm i -D js-conditional-compile-loader
+    npm i -D rollup-plugin-ifdef
 ````
 
-### Config in webpack
-Change webpack config like this:    
-See this sample: vue-element-ui-scaffold-webpack4(https://github.com/hzsrc/vue-element-ui-scaffold-webpack4)   
-`js-conditional-compile-loader` needs to be added as step 1 for a rule, means it is set as the last item of the `use` array.   
-This sample is a config for `vue` and `js` files, `ts` file is alike. For config of css、scss, See [this sample](https://github.com/hzsrc/vue-element-ui-scaffold-webpack4/blob/master/build/utils.js)
-
+### Config in vite
+Change vite config like this:    
 ````js
-const conditionalCompiler = {
-    loader: 'js-conditional-compile-loader',
-    options: {
-        isDebug: process.env.NODE_ENV === 'development', // optional, this expression is default
-        envTest: process.env.ENV_CONFIG === 'test', // any prop name you want, used for /* IFTRUE_evnTest ...js code... FITRUE_evnTest */
-        myFlag: process.env.npm_config_myflag, // enabled by `npm run build --myflag`
-    }
-}
+import { defineConfig } from "vite";
+import vue from "@vitejs/plugin-vue";
+import ifdef from "rollup-plugin-ifdef";
 
-module.exports = {
-    // others...
-    module: {
-        rules: [
-            {
-                test: /\.vue$/,
-                use: ['vue-loader', conditionalCompiler],
-            },
-            {
-                test: /\.js$/,
-                include: [resolve('src'), resolve('test')],
-                use: [
-                    //step-2
-                    'babel-loader?cacheDirectory',
-                    //step-1
-                    conditionalCompiler,
-                ],
-            },
-            // others...
-        ]
-    }
-}
+// https://vitejs.dev/config/
+export default defineConfig({
+  plugins: [
+    ifdef({
+        isDebug: process.env.NODE_ENV === 'development', // optional, this expression is default
+        envTest: process.env.ENV_CONFIG === 'test', // any prop name you want, used for /* 
+    }),
+    vue(),
+  ],
+});
 ````
 ### options
 - isDebug: boolean
