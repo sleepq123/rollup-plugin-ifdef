@@ -1,10 +1,13 @@
 {
   "name": "rollup-plugin-ifdef",
-  "version": "1.0.0",
+  "version": "1.1.1",
   "description": "A conditional compiling plugin for rollup or vite, support js,ts,css,scss,vue,react. 一个条件编译的rollup plugin，支持js,ts,css,scss,vue,react等。",
-  "main": "index.js",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "scripts": {
+    "build": "tsc",
     "test": "jest",
+    "prepare": "npm run build",
     "prepublish": "npm test"
   },
   "dependencies": {
@@ -26,7 +29,8 @@
   "license": "MIT",
   "readme": "readme.md",
   "devDependencies": {
-    "jest": "^24.8.0"
+    "jest": "^24.8.0",
+    "typescript": "^4.7.4"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"

@@ -1,5 +1,5 @@
-var replacer = require("../replacer");
-var plugin = require("../index");
+var replacer = require("../lib/replacer");
+var plugin = require("../lib/index");
 var glob = require("glob");
 var fs = require("fs");
 var path = require("path");

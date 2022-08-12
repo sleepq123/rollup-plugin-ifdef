@@ -1,6 +1,9 @@
+import { IfdefPluginOptions } from ".";
+
 var REG = /\/\*\s*IF(DEBUG|TRUE_\w+)(?:\s*\*\/)?([\s\S]+?)(?:\/\*\s*)?FI\1\s*\*\//g;
 
-exports.replaceMatched = function (js, options) {
+
+exports.replaceMatched = function (js: string, options: IfdefPluginOptions) {
   return js.replace(REG, (match, $1, $2) => {
     var isKeep;
     if ($1 === 'DEBUG') {

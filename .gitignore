@@ -1,3 +1,5 @@
 .idea
 intro.png
 node_modules
+
+/lib
